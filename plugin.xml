@@ -20,7 +20,7 @@
         <clobbers target="window.plugins.phonestatelistener"/>
     </js-module>
 
-    <js-module src="test/tests.js" name="tests">
+    <!-- <js-module src="test/tests.js" name="tests"> -->
     </js-module>
 
     <!-- android -->
