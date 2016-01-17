@@ -4,7 +4,7 @@
         id="com.plugins.phonestatelistener"
         version="1.0">
 
-    <name>CallLog</name>
+    <name>PhoneStateListener</name>
 
     <description>
         This plugin updates you about incoming and outgoing calls
