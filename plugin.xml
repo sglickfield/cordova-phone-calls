@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="com.plugins.phonestatelistener"
+        version="1.0">
+
+    <name>CallLog</name>
+
+    <description>
+        This plugin updates you about incoming and outgoing calls
+    </description>
+
+    <license>None</license>
+
+    <engines>
+        <engine name="cordova" version=">=3.0.0"/>
+    </engines>
+
+    <js-module src="www/PhoneStateListener.js" name="PhoneStateListener">
+        <clobbers target="window.plugins.phonestatelistener"/>
+    </js-module>
+
+    <js-module src="test/tests.js" name="tests">
+    </js-module>
+
+    <!-- android -->
+    <platform name="android">
+
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="PhoneStateListener">
+                <param name="android-package" value="com.plugins.PhoneStateListenerPlugin"/>
+            </feature>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
+        </config-file>
+
+        <source-file src="src/com/plugins/PhoneStateListenerPlugin.java" target-dir="src/com/phonecalls/plugins"/>
+    </platform>
+</plugin>
