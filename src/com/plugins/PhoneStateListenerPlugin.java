@@ -5,6 +5,7 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PluginResult;
@@ -29,7 +30,10 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
     public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) {
 
         Log.i("PhoneStateListenerPlugin", "Plugin Called");
-        return true;
+        Context context=this.cordova.getActivity().getApplicationContext(); 
+        MyPhoneStateListener mpsl = new MyPhoneStateListener(context); 
+
+	return true;
         // Sarah G: Limitation - the mCallbackContext will be overwritten with each call to execute.
         // If we're doing multiple things here with different callbacks, we need to have one callback per "thing" we're doing
 
@@ -63,19 +67,21 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
             e.printStackTrace();
         }
     }
-
+*/
     public class MyPhoneStateListener extends PhoneStateListener {
 
         Context mContext;
 
         public MyPhoneStateListener(Context c) {
+            Log.i("MyPhoneListener", "In Constructor");
             mContext = c;
         }
 
         @Override
         public void onCallStateChanged(int state, String incomingNumber) {
-            Log.d("MyPhoneListener", state + "   incoming no:" + incomingNumber);
+            Log.i("MyPhoneListener", state + "   incoming no:" + incomingNumber);
 
+/*
             if (state == TelephonyManager.CALL_STATE_RINGING) {
 
                 String msg = " New Phone Call Event. Incomming Number : " + incomingNumber;
@@ -93,9 +99,10 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
                 //PhoneStateTracker.PhoneState tmpState = PhoneStateTracker.getPhoneStateTracker().getState();
                 Log.d("PhoneStateListenerPlugin", "Old State = " + PhoneStateTracker.getPhoneStateTracker().getStateString());
             }
+	*/
         }
     }
-    */
+    
 }
 
 /*
