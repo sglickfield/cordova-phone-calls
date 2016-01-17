@@ -29,7 +29,7 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
     public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) {
 
         Log.i("PhoneStateListenerPlugin", "Plugin Called");
-
+        return true;
         // Sarah G: Limitation - the mCallbackContext will be overwritten with each call to execute.
         // If we're doing multiple things here with different callbacks, we need to have one callback per "thing" we're doing
 
