@@ -1,16 +1,15 @@
 package com.plugins;
 
-import android.bluetooth.BluetoothHealthAppConfiguration;
 import android.content.Context;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PluginResult;
 import org.apache.cordova.PluginResult.Status;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,7 +28,7 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
     @Override
     public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) {
 
-        Log.i(TAG, "Plugin Called");
+        Log.i("PhoneStateListenerPlugin", "Plugin Called");
 
         // Sarah G: Limitation - the mCallbackContext will be overwritten with each call to execute.
         // If we're doing multiple things here with different callbacks, we need to have one callback per "thing" we're doing
