@@ -1,9 +1,17 @@
 package com.plugins;
 
+import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.IBinder;
+import android.os.Looper;
+import android.os.Message;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -33,16 +41,17 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
         Log.i("PhoneStateListenerPlugin", "Plugin Called");
 
         Context context = this.cordova.getActivity().getApplicationContext();
+        
+      if (mTelephonyManager == null) {
+          // TELEPHONY MANAGER class object to register one listner
+          mTelephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+          //Create Listener
+          // MyPhoneStateListener PhoneListener = new MyPhoneStateListener(this.getApplicationContext());
+          MyPhoneStateListener myPhoneStateListener = new MyPhoneStateListener(context);
 
-        // TELEPHONY MANAGER class object to register one listner
-        mTelephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-
-        //Create Listener
-        // MyPhoneStateListener PhoneListener = new MyPhoneStateListener(this.getApplicationContext());
-        MyPhoneStateListener myPhoneStateListener = new MyPhoneStateListener(context);
-
-        // Register listener for LISTEN_CALL_STATE
-        mTelephonyManager.listen(myPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
+          // Register listener for LISTEN_CALL_STATE
+          mTelephonyManager.listen(myPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
+      }
 
         return true;
 
@@ -55,29 +64,29 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
         //mCallback.sendPluginResult(result);
     }
 
-/*    private void sendNote(PhoneStateTracker.PhoneState stateTracker) {
-        String phoneNumber = PhoneStateTracker.getPhoneStateTracker().getPhoneNumber();
-        Log.i("PhoneStateListenerPlugin", "in SendNote() with phone number " + phoneNumber);
-        if (phoneNumber == null) {
-            return;
+    /*    private void sendNote(PhoneStateTracker.PhoneState stateTracker) {
+            String phoneNumber = PhoneStateTracker.getPhoneStateTracker().getPhoneNumber();
+            Log.i("PhoneStateListenerPlugin", "in SendNote() with phone number " + phoneNumber);
+            if (phoneNumber == null) {
+                return;
+            }
+
+            String personID = BullhornAPI.searchPersonIDByPhoneNumber(phoneNumber);
+            String action = PhoneStateTracker.getPhoneStateTracker().getStateString();
+
+            try {
+
+                JSONObject addNotePostData = new JSONObject();
+                addNotePostData.put("personID", personID);
+                addNotePostData.put("action", action);
+                addNotePostData.put("comments", ""); // TODO: Pop up a screen for them to add in a note
+
+                BullhornAPI.addNote(addNotePostData.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-
-        String personID = BullhornAPI.searchPersonIDByPhoneNumber(phoneNumber);
-        String action = PhoneStateTracker.getPhoneStateTracker().getStateString();
-
-        try {
-
-            JSONObject addNotePostData = new JSONObject();
-            addNotePostData.put("personID", personID);
-            addNotePostData.put("action", action);
-            addNotePostData.put("comments", ""); // TODO: Pop up a screen for them to add in a note
-
-            BullhornAPI.addNote(addNotePostData.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-*/
+    */
     public class MyPhoneStateListener extends PhoneStateListener {
 
         Context mContext;
@@ -116,7 +125,21 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
             }
         }
     }
+
 }
+
+/*
+Request should take this format:
+
+PUT http://dschulte-backend.bh-bos2.bullhorn.com:8181/rest-services/5zio9/entity/Note
+
+{
+"personID": 1234,
+"action": "Inbound Call",
+"comment":"This is a comment"
+}
+*/
+
 
 /*
 Request should take this format:
