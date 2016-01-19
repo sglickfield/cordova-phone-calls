@@ -64,9 +64,9 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
         // If we're doing multiple things here with different callbacks, we need to have one callback per "thing" we're doing
 
         mCallbackContext = callbackContext;
-        PluginResult result = new PluginResult(PluginResult.Status.NO_RESULT);
-        result.setKeepCallback(true);
-        mCallback.sendPluginResult(result);
+      //  PluginResult result = new PluginResult(PluginResult.Status.NO_RESULT);
+      //  result.setKeepCallback(true);
+      //  mCallback.sendPluginResult(result);
         return true;
     }
 
