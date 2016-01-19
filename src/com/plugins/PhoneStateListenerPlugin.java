@@ -64,11 +64,12 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
         // If we're doing multiple things here with different callbacks, we need to have one callback per "thing" we're doing
 
         mCallbackContext = callbackContext;
-        PluginResult result = new PluginResult(PluginResult.Status.NO_RESULT, "Setting Keep Callback to True");
+        logMessageAndSendResponse("Setting Keep Callback to True");
+       /* PluginResult result = new PluginResult(PluginResult.Status.NO_RESULT, "Setting Keep Callback to True");
         result.setKeepCallback(true);
         if (mCallbackContext != null){
             mCallbackContext.sendPluginResult(result);
-        }
+        }*/
         return true;
     }
 
@@ -105,12 +106,7 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
             if (Intent.ACTION_NEW_OUTGOING_CALL.equals(intent.getAction())) {
                 final String originalNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
                 String msg = "outgoing,ringing " + originalNumber;
-                Log.i("PhoneStateListenerPlugin", msg);
-                if (mCallbackContext != null){
-                    PluginResult result = new PluginResult(PluginResult.Status.OK, msg);
-                    result.setKeepCallback(true);
-                    mCallbackContext.sendPluginResult(result);
-                }
+                logMessageAndSendResponse(msg);
             }
         }
     }
@@ -150,57 +146,49 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
 
                 String msg = " New Phone Call Event. Incomming Number : " + incomingNumber;
                 Log.i("PhoneStateListenerPlugin", msg);
-                if (mCallbackContext != null){
-                    PluginResult result = new PluginResult(PluginResult.Status.OK, msg);
-                    result.setKeepCallback(true);
-                    mCallbackContext.sendPluginResult(result);
-                }
+                logMessageAndSendResponse(msg);
 //                int duration = Toast.LENGTH_LONG;
 //                Toast toast = Toast.makeText(mContext, msg, duration);
 //                toast.show();
                 //PhoneStateTracker.getPhoneStateTracker().setState(PhoneStateTracker.PhoneState.INCOMING, incomingNumber);
             } else if (state == TelephonyManager.CALL_STATE_IDLE) {
                 String msg = "Phone State IDLE";
-                Log.i("PhoneStateListenerPlugin", msg);
-                if (mCallbackContext != null){
-                    PluginResult result = new PluginResult(PluginResult.Status.OK, msg);
-                    result.setKeepCallback(true);
-                    mCallbackContext.sendPluginResult(result);
-                }
+                logMessageAndSendResponse(msg);
                 // Phone was just hung up
                 //sendNote(PhoneStateTracker.getPhoneStateTracker().getState());
 
                 //PhoneStateTracker.getPhoneStateTracker().setState(PhoneStateTracker.PhoneState.IDLE, "");
             } else if (state == TelephonyManager.CALL_STATE_OFFHOOK) {
                 String msg = "Phone State OFFHOOK";
-                Log.i("PhoneStateListenerPlugin", msg);
-                if (mCallbackContext != null){
-                    PluginResult result = new PluginResult(PluginResult.Status.OK, msg);
-                    result.setKeepCallback(true);
-                    mCallbackContext.sendPluginResult(result);
-                }
+                logMessageAndSendResponse(msg);
+
                 // If we go into the CALL_STATE_OFFHOOK state, and the previous state wasn't CALL_STATE_RINGING - then this is an outbound call
                 //PhoneStateTracker.PhoneState tmpState = PhoneStateTracker.getPhoneStateTracker().getState();
                 //Log.d("PhoneStateListenerPlugin", "Old State = " + PhoneStateTracker.getPhoneStateTracker().getStateString());
             }
         }
+
     }
 
+    private boolean logMessageAndSendResponse(String msg){
+        JSONObject jsonObj = new JSONObject();
+        try {
+            jsonObj.put("message", msg);
+            JSONArray jsonResp = new JSONArray();
+            jsonResp.put(jsonObj);
+            Log.i("PhoneStateListenerPlugin", msg);
+            if (mCallbackContext != null) {
+                PluginResult result = new PluginResult(PluginResult.Status.OK, msg);
+                result.setKeepCallback(true);
+                mCallbackContext.sendPluginResult(result);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 }
-
-/*
-Request should take this format:
-
-PUT http://dschulte-backend.bh-bos2.bullhorn.com:8181/rest-services/5zio9/entity/Note
-
-{
-"personID": 1234,
-"action": "Inbound Call",
-"comment":"This is a comment"
-}
-*/
-
-
 /*
 Request should take this format:
 
