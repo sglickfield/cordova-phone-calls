@@ -64,9 +64,9 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
         // If we're doing multiple things here with different callbacks, we need to have one callback per "thing" we're doing
 
         mCallbackContext = callbackContext;
-      //  PluginResult result = new PluginResult(PluginResult.Status.NO_RESULT);
-      //  result.setKeepCallback(true);
-      //  mCallback.sendPluginResult(result);
+        PluginResult result = new PluginResult(PluginResult.Status.NO_RESULT);
+        result.setKeepCallback(true);
+        mCallback.sendPluginResult(result);
         return true;
     }
 
@@ -103,6 +103,7 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
             if (Intent.ACTION_NEW_OUTGOING_CALL.equals(intent.getAction())) {
                 final String originalNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
                 Log.i("PhoneStateListenerPlugin", "outgoing,ringing:" + originalNumber);
+                mCallback.sendPluginResult("outgoing,ringing " + originalNumber);
             }
         }
     }
@@ -142,6 +143,7 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
 
                 String msg = " New Phone Call Event. Incomming Number : " + incomingNumber;
                 Log.i("PhoneStateListenerPlugin", msg);
+                mCallback.sendPluginResult(msg);
 //                int duration = Toast.LENGTH_LONG;
 //                Toast toast = Toast.makeText(mContext, msg, duration);
 //                toast.show();
@@ -149,6 +151,7 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
             } else if (state == TelephonyManager.CALL_STATE_IDLE) {
                 String msg = "Phone State IDLE";
                 Log.i("PhoneStateListenerPlugin", msg);
+                mCallback.sendPluginResult(msg);
 
                 // Phone was just hung up
                 //sendNote(PhoneStateTracker.getPhoneStateTracker().getState());
@@ -157,6 +160,7 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
             } else if (state == TelephonyManager.CALL_STATE_OFFHOOK) {
                 String msg = "Phone State OFFHOOK";
                 Log.i("PhoneStateListenerPlugin", msg);
+                mCallback.sendPluginResult(msg);
 
                 // If we go into the CALL_STATE_OFFHOOK state, and the previous state wasn't CALL_STATE_RINGING - then this is an outbound call
                 //PhoneStateTracker.PhoneState tmpState = PhoneStateTracker.getPhoneStateTracker().getState();
