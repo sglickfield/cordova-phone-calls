@@ -41,7 +41,7 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
         Log.i("PhoneStateListenerPlugin", "Plugin Called");
 
         Context context = this.cordova.getActivity().getApplicationContext();
-        
+
       if (mTelephonyManager == null) {
           // TELEPHONY MANAGER class object to register one listner
           mTelephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
@@ -95,13 +95,31 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
             mContext = c;
         }
 
+        // LOG PATTERNS AFTER RUNNING A COUPLE OF TESTS
+        // NOTES:
+        // 1. At what point do we lose the focus, and our phone capture no longer works?
+        // 1a. Is there some way to solve for this? (possibilities - use a Service, or launch our app on startup
+        // 2. We need to call execute from the HTML as soon as the page loads, so that these objects get created.  Otherwise we won't have a TelephonyManager
+
+ /*       01-18 22:25:07.445  27297-27297/com.ionicframework.pulsemobile496191 I/PhoneStateListenerPlugin﹕ New Phone Call Event. Incomming Number : 13055272920
+                01-18 22:25:19.885  27297-27297/com.ionicframework.pulsemobile496191 I/PhoneStateListenerPlugin﹕ Phone State IDLE
+        01-18 22:25:33.289  27297-27297/com.ionicframework.pulsemobile496191 I/PhoneStateListenerPlugin﹕ New Phone Call Event. Incomming Number : 13055272920
+                01-18 22:25:35.844  27297-27297/com.ionicframework.pulsemobile496191 I/PhoneStateListenerPlugin﹕ Phone State OFFHOOK
+        01-18 22:25:40.240  27297-27297/com.ionicframework.pulsemobile496191 I/PhoneStateListenerPlugin﹕ Phone State IDLE
+        01-18 22:25:48.518  27297-27297/com.ionicframework.pulsemobile496191 I/PhoneStateListenerPlugin﹕ Phone State OFFHOOK
+        01-18 22:26:04.608  27297-27297/com.ionicframework.pulsemobile496191 I/PhoneStateListenerPlugin﹕ Phone State IDLE
+        01-18 22:26:08.291  27297-27297/com.ionicframework.pulsemobile496191 I/PhoneStateListenerPlugin﹕ Phone State OFFHOOK
+        01-18 22:26:33.024  27297-27297/com.ionicframework.pulsemobile496191 I/PhoneStateListenerPlugin﹕ Phone State IDLE
+  */
+
         @Override
         public void onCallStateChanged(int state, String incomingNumber) {
             Log.i("MyPhoneListener", state + "   incoming no:" + incomingNumber);
+            String intentExtraNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
 
             if (state == TelephonyManager.CALL_STATE_RINGING) {
 
-                String msg = " New Phone Call Event. Incomming Number : " + incomingNumber;
+                String msg = " New Phone Call Event. Incomming Number : " + incomingNumber + " Intent.EXTRA_PHONE_NUMBER : " + intentExtraNumber ;
                 Log.i("PhoneStateListenerPlugin", msg);
 //                int duration = Toast.LENGTH_LONG;
 //                Toast toast = Toast.makeText(mContext, msg, duration);
