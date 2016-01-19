@@ -167,16 +167,17 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
                 //Log.d("PhoneStateListenerPlugin", "Old State = " + PhoneStateTracker.getPhoneStateTracker().getStateString());
             }
         }
-
     }
 
     private boolean logMessageAndSendResponse(String msg){
         JSONObject jsonObj = new JSONObject();
         try {
             jsonObj.put("message", msg);
-            JSONArray jsonResp = new JSONArray();
-            jsonResp.put(jsonObj);
-            Log.i("PhoneStateListenerPlugin", jsonResp  .toString());
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.put(jsonObj);
+            JSONObject jsonResp = new JSONObject();
+            jsonResp.put("messageList", jsonArray);
+            Log.i("PhoneStateListenerPlugin", jsonResp.toString());
             if (mCallbackContext != null) {
                 PluginResult result = new PluginResult(PluginResult.Status.OK, jsonResp.toString());
                 result.setKeepCallback(true);
