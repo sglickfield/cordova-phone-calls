@@ -21,7 +21,7 @@ import org.json.JSONObject;
 
 public class PhoneStateListenerPlugin extends CordovaPlugin {
 
-    private CallbackContext mCallbackContext;
+    final private CallbackContext mCallbackContext;
 //    private TimerTask mTimerTask;
 //    private Timer mTimer;
 //    private final Handler mHandler = new Handler();
