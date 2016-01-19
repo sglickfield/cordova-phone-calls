@@ -1,6 +1,7 @@
 package com.plugins;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -43,19 +44,19 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
 
         Context context = this.cordova.getActivity().getApplicationContext();
 
-        if (!mOutboundReceiverRegistered){
+        if (!mOutgoingCallReceiverRegistered){
             context.registerReceiver(new OutgoingCallBroadcastReceiver);
         }
-      if (mTelephonyManager == null) {
-          // TELEPHONY MANAGER class object to register one listner
-          mTelephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-          //Create Listener
-          // MyPhoneStateListener PhoneListener = new MyPhoneStateListener(this.getApplicationContext());
-          MyPhoneStateListener myPhoneStateListener = new MyPhoneStateListener(context);
+        if (mTelephonyManager == null) {
+            // TELEPHONY MANAGER class object to register one listner
+            mTelephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            //Create Listener
+            // MyPhoneStateListener PhoneListener = new MyPhoneStateListener(this.getApplicationContext());
+            MyPhoneStateListener myPhoneStateListener = new MyPhoneStateListener(context);
 
-          // Register listener for LISTEN_CALL_STATE
-          mTelephonyManager.listen(myPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
-      }
+            // Register listener for LISTEN_CALL_STATE
+            mTelephonyManager.listen(myPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
+        }
 
         return true;
 
@@ -133,7 +134,7 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
         @Override
         public void onCallStateChanged(int state, String incomingNumber) {
             Log.i("MyPhoneListener", state + "   incoming no:" + incomingNumber);
-     //       String intentExtraNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
+            //       String intentExtraNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
 
             if (state == TelephonyManager.CALL_STATE_RINGING) {
 
