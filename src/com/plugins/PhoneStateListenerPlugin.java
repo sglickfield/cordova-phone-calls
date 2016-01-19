@@ -21,7 +21,7 @@ import org.json.JSONObject;
 
 public class PhoneStateListenerPlugin extends CordovaPlugin {
 
-//    private CallbackContext mCallbackContext;
+    private CallbackContext mCallbackContext;
 //    private TimerTask mTimerTask;
 //    private Timer mTimer;
 //    private final Handler mHandler = new Handler();
@@ -33,16 +33,16 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
         Context context=this.cordova.getActivity().getApplicationContext(); 
         MyPhoneStateListener mpsl = new MyPhoneStateListener(context); 
 
-	return true;
         // Sarah G: Limitation - the mCallbackContext will be overwritten with each call to execute.
         // If we're doing multiple things here with different callbacks, we need to have one callback per "thing" we're doing
 
-//        mCallbackContext = callbackContext;
-//        PluginResult result = new PluginResult(PluginResult.Status.NO_RESULT);
-//        result.setKeepCallback(true);
-//        mCallback.sendPluginResult(result);
+        mCallbackContext = callbackContext;
+        PluginResult result = new PluginResult(PluginResult.Status.NO_RESULT);
+        result.setKeepCallback(true);
+        mCallback.sendPluginResult(result);
 
 //        PhoneStateListenerPlugin phoneStateListenerPlugin  = new PhoneStateListenerPlugin(this.cordova.getActivity().getApplicationContext());
+        return true;
     }
 
 /*    private void sendNote(PhoneStateTracker.PhoneState stateTracker) {
