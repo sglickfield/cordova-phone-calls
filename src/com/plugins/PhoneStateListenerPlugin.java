@@ -33,7 +33,7 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
     TelephonyManager mTelephonyManager;
 
     boolean mOutgoingCallReceiverRegistered = false;
-    final private CallbackContext mCallbackContext;
+    final CallbackContext mCallbackContext;
 //    private TimerTask mTimerTask;
 //    private Timer mTimer;
 //    private final Handler mHandler = new Handler();
