@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
@@ -45,7 +46,7 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
         Context context = this.cordova.getActivity().getApplicationContext();
 
         if (!mOutgoingCallReceiverRegistered){
-            context.registerReceiver(new OutgoingCallBroadcastReceiver());
+            context.registerReceiver(new OutgoingCallBroadcastReceiver(), new IntentFilter(Intent.ACTION_NEW_OUTGOING_CALL));
         }
         if (mTelephonyManager == null) {
             // TELEPHONY MANAGER class object to register one listner
