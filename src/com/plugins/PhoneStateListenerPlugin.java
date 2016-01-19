@@ -45,7 +45,7 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
         Context context = this.cordova.getActivity().getApplicationContext();
 
         if (!mOutgoingCallReceiverRegistered){
-            context.registerReceiver(new OutgoingCallBroadcastReceiver);
+            context.registerReceiver(new OutgoingCallBroadcastReceiver());
         }
         if (mTelephonyManager == null) {
             // TELEPHONY MANAGER class object to register one listner
