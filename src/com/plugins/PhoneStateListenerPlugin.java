@@ -20,6 +20,8 @@ import org.json.JSONObject;
 
 public class PhoneStateListenerPlugin extends CordovaPlugin {
 
+    TelephonyManager mTelephonyManager;
+
 //    final private CallbackContext mCallbackContext;
 //    private TimerTask mTimerTask;
 //    private Timer mTimer;
@@ -30,8 +32,17 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
 
         Log.i("PhoneStateListenerPlugin", "Plugin Called");
 
-  //      Context context=this.cordova.getActivity().getApplicationContext();
-  //      MyPhoneStateListener mpsl = new MyPhoneStateListener(context);
+        Context context = this.cordova.getActivity().getApplicationContext();
+
+        // TELEPHONY MANAGER class object to register one listner
+        mTelephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+
+        //Create Listener
+        // MyPhoneStateListener PhoneListener = new MyPhoneStateListener(this.getApplicationContext());
+        MyPhoneStateListener myPhoneStateListener = new MyPhoneStateListener(context);
+
+        // Register listener for LISTEN_CALL_STATE
+        mTelephonyManager.listen(myPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
 
         return true;
 
@@ -66,7 +77,7 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
             e.printStackTrace();
         }
     }
-
+*/
     public class MyPhoneStateListener extends PhoneStateListener {
 
         Context mContext;
@@ -77,28 +88,34 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
 
         @Override
         public void onCallStateChanged(int state, String incomingNumber) {
-            Log.d("MyPhoneListener", state + "   incoming no:" + incomingNumber);
+            Log.i("MyPhoneListener", state + "   incoming no:" + incomingNumber);
 
             if (state == TelephonyManager.CALL_STATE_RINGING) {
 
                 String msg = " New Phone Call Event. Incomming Number : " + incomingNumber;
-                int duration = Toast.LENGTH_LONG;
-                Toast toast = Toast.makeText(mContext, msg, duration);
-                toast.show();
-                PhoneStateTracker.getPhoneStateTracker().setState(PhoneStateTracker.PhoneState.INCOMING, incomingNumber);
+                Log.i("PhoneStateListenerPlugin", msg);
+//                int duration = Toast.LENGTH_LONG;
+//                Toast toast = Toast.makeText(mContext, msg, duration);
+//                toast.show();
+                //PhoneStateTracker.getPhoneStateTracker().setState(PhoneStateTracker.PhoneState.INCOMING, incomingNumber);
             } else if (state == TelephonyManager.CALL_STATE_IDLE) {
+                String msg = "Phone State IDLE";
+                Log.i("PhoneStateListenerPlugin", msg);
+
                 // Phone was just hung up
                 //sendNote(PhoneStateTracker.getPhoneStateTracker().getState());
 
                 //PhoneStateTracker.getPhoneStateTracker().setState(PhoneStateTracker.PhoneState.IDLE, "");
             } else if (state == TelephonyManager.CALL_STATE_OFFHOOK) {
+                String msg = "Phone State OFFHOOK";
+                Log.i("PhoneStateListenerPlugin", msg);
+
                 // If we go into the CALL_STATE_OFFHOOK state, and the previous state wasn't CALL_STATE_RINGING - then this is an outbound call
                 //PhoneStateTracker.PhoneState tmpState = PhoneStateTracker.getPhoneStateTracker().getState();
-                Log.d("PhoneStateListenerPlugin", "Old State = " + PhoneStateTracker.getPhoneStateTracker().getStateString());
+                //Log.d("PhoneStateListenerPlugin", "Old State = " + PhoneStateTracker.getPhoneStateTracker().getStateString());
             }
         }
     }
-    */
 }
 
 /*
