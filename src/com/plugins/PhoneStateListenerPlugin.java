@@ -60,8 +60,6 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
             mTelephonyManager.listen(myPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
         }
 
-        return true;
-
         // Sarah G: Limitation - the mCallbackContext will be overwritten with each call to execute.
         // If we're doing multiple things here with different callbacks, we need to have one callback per "thing" we're doing
 
@@ -69,6 +67,7 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
         PluginResult result = new PluginResult(PluginResult.Status.NO_RESULT);
         result.setKeepCallback(true);
         mCallback.sendPluginResult(result);
+        return true;
     }
 
     /*    private void sendNote(PhoneStateTracker.PhoneState stateTracker) {
