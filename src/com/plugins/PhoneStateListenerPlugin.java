@@ -30,6 +30,7 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
 
     TelephonyManager mTelephonyManager;
 
+    boolean mOutgoingCallReceiverRegistered = false;
 //    final private CallbackContext mCallbackContext;
 //    private TimerTask mTimerTask;
 //    private Timer mTimer;
@@ -42,6 +43,9 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
 
         Context context = this.cordova.getActivity().getApplicationContext();
 
+        if (!mOutboundReceiverRegistered){
+            context.registerReceiver(new OutgoingCallBroadcastReceiver);
+        }
       if (mTelephonyManager == null) {
           // TELEPHONY MANAGER class object to register one listner
           mTelephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
@@ -87,6 +91,20 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
             }
         }
     */
+
+    public class OutgoingCallBroadcastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(final Context context, final Intent intent) {
+            Log.i("PhoneStateListenerPlugin", "ACTION:" + intent.getAction());
+
+            if (Intent.ACTION_NEW_OUTGOING_CALL.equals(intent.getAction())) {
+                final String originalNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
+                Log.i("PhoneStateListenerPlugin", "outgoing,ringing:" + originalNumber);
+            }
+        }
+    }
+
     public class MyPhoneStateListener extends PhoneStateListener {
 
         Context mContext;
@@ -115,11 +133,11 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
         @Override
         public void onCallStateChanged(int state, String incomingNumber) {
             Log.i("MyPhoneListener", state + "   incoming no:" + incomingNumber);
-            String intentExtraNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
+     //       String intentExtraNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
 
             if (state == TelephonyManager.CALL_STATE_RINGING) {
 
-                String msg = " New Phone Call Event. Incomming Number : " + incomingNumber + " Intent.EXTRA_PHONE_NUMBER : " + intentExtraNumber ;
+                String msg = " New Phone Call Event. Incomming Number : " + incomingNumber;
                 Log.i("PhoneStateListenerPlugin", msg);
 //                int duration = Toast.LENGTH_LONG;
 //                Toast toast = Toast.makeText(mContext, msg, duration);
