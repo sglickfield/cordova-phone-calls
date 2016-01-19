@@ -47,6 +47,7 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
 
         if (!mOutgoingCallReceiverRegistered){
             context.registerReceiver(new OutgoingCallBroadcastReceiver(), new IntentFilter(Intent.ACTION_NEW_OUTGOING_CALL));
+            mOutgoingCallReceiverRegistered = true;
         }
         if (mTelephonyManager == null) {
             // TELEPHONY MANAGER class object to register one listner
@@ -120,6 +121,7 @@ public class PhoneStateListenerPlugin extends CordovaPlugin {
         // 1. At what point do we lose the focus, and our phone capture no longer works?
         // 1a. Is there some way to solve for this? (possibilities - use a Service, or launch our app on startup
         // 2. We need to call execute from the HTML as soon as the page loads, so that these objects get created.  Otherwise we won't have a TelephonyManager
+        // 3. When we receive an outgoing call action - we don't know if that call has been answered or not
 
  /*       01-18 22:25:07.445  27297-27297/com.ionicframework.pulsemobile496191 I/PhoneStateListenerPlugin﹕ New Phone Call Event. Incomming Number : 13055272920
                 01-18 22:25:19.885  27297-27297/com.ionicframework.pulsemobile496191 I/PhoneStateListenerPlugin﹕ Phone State IDLE
